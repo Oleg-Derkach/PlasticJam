@@ -1,0 +1,72 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <!-- jQuery CDN -->
+    <script
+    src="https://code.jquery.com/jquery-1.12.4.min.js"
+    integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+    crossorigin="anonymous"></script>
+     <!-- highcharts CDN -->
+    <title>PlasticJam</title>
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>  
+    <script src="https://code.highcharts.com/modules/heatmap.js"></script>
+    <script src="https://code.highcharts.com/modules/treemap.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/icomoon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery.formstyler.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery.formstyler.theme.css' %}">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />       
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link href="http://fonts.googleapis.com/css?family=Cookie" rel="stylesheet" type="text/css">
+    {% load chartit %}
+    {{ statistic_chart|load_charts:"chart" }}
+</head>
+<body>
+
+<div class="table" style="margin: 20px;">
+    <h2>Statistic for user {{ stat_user.user.first_name }} {{ stat_user.user.last_name }}</h2>
+    <table class="blueTable">
+        <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">first_name</th>          
+            <th scope="col">last_name</th>
+            <th scope="col">email</th>
+            <th scope="col">gender</th>
+            <th scope="col">ip_address</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ stat_user.user.id }}</td>
+                <td>{{ stat_user.user.first_name }}</td>
+                <td>{{ stat_user.user.last_name }}</td>
+                <td>{{ stat_user.user.email }}</td>
+                <td>{{ stat_user.user.gender }}</td>
+                <td>{{ stat_user.user.ip_address }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<form method="GET" action="." style="margin: 20px;">
+    <div class="form-row">
+        <div class="form-group col-md-2 col-lg-2">
+            <label for="publishDateMin">from</label>
+            <input type="date" class="form-control" id="publishDateMin" name="date_min">
+        </div>
+        <div class="form-group col-md-2 col-lg-2">
+            <label for="publishDateMax">to</label>
+            <input type="date" class="form-control" id="publishDateMax" name="date_max">
+        </div>  
+    </div>   
+    <button type="submit" class="btn btn-primary">Search</button>
+    <div id='chart' style="min-width: 500px; height: 400px; max-width: 1000px; margin: 0 auto; padding: 5px"></div>
+</form>
+</body>
+</html>

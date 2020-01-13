@@ -1,0 +1,113 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1">
+    <title>PlasticJam</title>
+    <link href="https://fonts.googleapis.com/css?family=Oswald:400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=PT+Serif:400,400i,700,700i" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{% static 'css/icomoon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery.formstyler.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery.formstyler.theme.css' %}">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />       
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link href="http://fonts.googleapis.com/css?family=Cookie" rel="stylesheet" type="text/css">
+            
+</head>
+<body>
+    <main>      
+
+<div class="table-responsive">
+    <h2>Table</h2>
+    <table class="blueTable">
+        <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">first_name</th>          
+            <th scope="col">last_name</th>
+            <th scope="col">email</th>
+            <th scope="col">gender</th>
+            <th scope="col">ip_address</th>
+            <th scope="col">total_clicks</th>
+            <th scope="col">total_page_views</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for stat in query_products %}
+            <tr>
+                <td>{{ stat.user.id }}</td>
+                <td>
+                    <a href="{{ stat.user.get_absolute_url }}">
+                    {{ stat.user.first_name }}</a>
+                </td>
+                <td>{{ stat.user.last_name }}</td>
+                <td>{{ stat.user.email }}</td>
+                <td>{{ stat.user.gender }}</td>
+                <td>{{ stat.user.ip_address }}</td>
+                <td>{{ stat.total_clicks }}</td>
+                <td>{{ stat.total_page_views }}</td>
+   
+        </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+
+<div>
+    {% if is_paginated %}
+    <div class="paginator">
+        <span class="paginator__item">
+            Page {{query_products.number}} of {{ query_products.paginator.num_pages }}
+        </span>
+        <ul class="paginator__item">
+            <li class="paginator__item {% if not query_products.has_previous %} disabled {% endif %}">
+
+            {% if query_products.has_previous %}
+                <a class="page__link" href="?page={{ query_products.previous_page_number }}{% for key,value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">Previous</a>
+            {% endif %}
+
+            </li>
+    {% for n in query_products.paginator.page_range %}
+        {% if query_products.number == n %}
+            <li class="paginator__item">
+                <a class="page__link active" href="?page={{ n }}{% for key,value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}"> {{ n }} <span class="sr-only"></span>
+                </a>
+            </li>
+        {% elif n > query_products.number|add:-3 and n < query_products.number|add:3 %}
+            <li class="paginator__item">
+                <a class="page__link" href="?page={{ n }}{% for key,value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}"> {{ n }} </a>
+            </li>
+        {% endif %}                 
+    {% endfor %}
+            <li class="paginator__item {% if not query_products.has_next %} disabled {% endif %}">
+
+            {% if query_products.has_next %}
+                <a class="page__link" href="?page={{ query_products.next_page_number }}{% for key,value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">Next</a>
+            {% endif %}
+
+            </li>
+        </ul>
+
+    </div>
+{% endif %}
+</div>
+
+
+</div>
+
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="{% static 'js/jquery.formstyler.min.js' %}"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+
+
+</main>
+</body>
+</html>
